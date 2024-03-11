@@ -20,13 +20,13 @@ AF_DCMotor motorRight1(3, MOTOR34_1KHZ);
 
 void setup() {
   myServo.attach(10);
-  myServo.write(115);
+  myServo.write(115); // Mueve el servo a una posición específica
   delay(1000);
-  myServo.write(65);
+  myServo.write(65);  // Mueve el servo a una posición específica
   delay(500);
-  myServo.write(160);
+  myServo.write(160); // Mueve el servo a una posición específica
   delay(500);
-  myServo.write(115);
+  myServo.write(115); // Mueve el servo a una posición específica
 }
 
 void loop() {
@@ -55,36 +55,24 @@ void loop() {
   }
 }
 
-int mirarDerecha() {
-  myServo.write(60);
-  delay(350);
-  int distancia = medirDistancia();
-  return distancia;
-}
-
-int mirarIzquierda() {
-  myServo.write(165);
-  delay(350);
-  int distancia = medirDistancia();
-  delay(50);
-  myServo.write(115);
-  return distancia;
-}
-
+// Función para medir la distancia hacia adelante
 int medirDistancia() {
-  delay(10);
-  int ditanciaCM = Dist.ping_cm();
-  if (ditanciaCM <= 0 || ditanciaCM >= 250) {
-    ditanciaCM = 250;
+  delay(10);  // Espera para evitar lecturas incorrectas
+  int distanciaCM = Dist.ping_cm();  // Realiza la medición de la distancia en centímetros
+  // Si la distancia es menor o igual a cero, o mayor o igual a 250, se considera como 250
+  if (distanciaCM <= 0 || distanciaCM >= 250) {
+    distanciaCM = 250;
   }
-  return ditanciaCM;
+  return distanciaCM;  // Retorna la distancia medida
 }
 
+// Función para detener los motores
 void Frenar() {
   motorLeft1.run(RELEASE);
   motorRight1.run(RELEASE);
 }
 
+// Función para mover el robot hacia adelante
 void Adelante() {
   if (Booleano == false) {
     Booleano = true;
@@ -94,6 +82,7 @@ void Adelante() {
   }
 }
 
+// Función para mover el robot hacia atrás
 void Reversa() {
   Booleano = false;
   motorLeft1.run(BACKWARD);
@@ -101,29 +90,53 @@ void Reversa() {
   controlVelocidad();
 }
 
+// Función para girar el servo hacia la derecha y medir la distancia
+int mirarDerecha() {
+  myServo.write(60);  // Mueve el servo a una posición específica para mirar a la derecha
+  delay(350);  // Espera para estabilizar la posición del servo
+  int distancia = medirDistancia();  // Realiza la medición de la distancia
+  return distancia;  // Retorna la distancia medida
+}
+
+// Función para girar el servo hacia la izquierda y medir la distancia
+int mirarIzquierda() {
+  myServo.write(165);  // Mueve el servo a una posición específica para mirar a la izquierda
+  delay(350);  // Espera para estabilizar la posición del servo
+  int distancia = medirDistancia();  // Realiza la medición de la distancia
+  delay(50);  // Espera adicional para estabilizar la posición del servo
+  myServo.write(115);  // Mueve el servo a su posición central original
+  return distancia;  // Retorna la distancia medida
+}
+
+// Función para mover el robot hacia la derecha
 void GirarDerecha() {
   motorLeft1.run(FORWARD);
   motorRight1.run(BACKWARD);
+  // Incrementa gradualmente la velocidad de giro
   for(int velocidad = 0; velocidad < 130; velocidad += 2) {
     motorLeft1.setSpeed(velocidad);
-    motorRight1.setSpeed(velocidad * 0.3);  // Establecer velocidad para la rueda derecha (30% de la velocidad de la izquierda)
+    motorRight1.setSpeed(velocidad * 0.3);  // Establece la velocidad para la rueda derecha (30% de la velocidad de la izquierda)
     delay(3);
   }
-  delay(400);
+  delay(400);  // Espera para completar el giro
 }
 
+// Función para mover el robot hacia la izquierda
 void GirarIzquierda() {
   motorLeft1.run(BACKWARD);
   motorRight1.run(FORWARD);
+  // Incrementa gradualmente la velocidad de giro
   for(int velocidad = 0; velocidad < 130; velocidad += 2) {
-    motorLeft1.setSpeed(velocidad * 0.3);  // Establecer velocidad para la rueda izquierda (30% de la velocidad de la izquierda)
+    motorLeft1.setSpeed(velocidad * 0.3);  // Establece la velocidad para la rueda izquierda (30% de la velocidad de la izquierda)
     motorRight1.setSpeed(velocidad); 
     delay(3);
   }
-  delay(400);
+  delay(400);  // Espera para completar el giro
 }
 
+// Función para controlar la velocidad de los motores
 void controlVelocidad() {
+  // Incrementa gradualmente la velocidad de avance
   for (int velocidad = 0; velocidad < 130; velocidad += 2) {
     motorLeft1.setSpeed(velocidad);
     motorRight1.setSpeed(velocidad);
@@ -131,4 +144,4 @@ void controlVelocidad() {
   }
 }
 
-//Final codigo
+// Final del código
