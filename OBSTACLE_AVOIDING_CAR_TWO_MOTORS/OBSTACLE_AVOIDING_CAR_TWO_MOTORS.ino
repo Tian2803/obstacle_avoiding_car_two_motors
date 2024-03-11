@@ -20,13 +20,13 @@ AF_DCMotor motorRight1(3, MOTOR34_1KHZ);
 
 void setup() {
   myServo.attach(10);
-  myServo.write(115); // Mueve el servo a una posición específica
+  myServo.write(115); // Mueve el servo a 115 grados
   delay(1000);
-  myServo.write(65);  // Mueve el servo a una posición específica
+  myServo.write(65);  // Mueve el servo a 65 grados
   delay(500);
-  myServo.write(160); // Mueve el servo a una posición específica
+  myServo.write(160); // Mueve el servo a 160 grados
   delay(500);
-  myServo.write(115); // Mueve el servo a una posición específica
+  myServo.write(115); // Mueve el servo a a 115 grados.
 }
 
 void loop() {
